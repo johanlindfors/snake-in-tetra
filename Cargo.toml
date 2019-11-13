@@ -1,0 +1,9 @@
+[package]
+name = "snake_in_rust"
+version = "0.1.0"
+authors = ["Johan Lindfors <johan.lindfors@coderox.se>"]
+edition = "2018"
+
+[dependencies]
+tetra = { version = "0.2.20" }
+rand = { version = "*" }
