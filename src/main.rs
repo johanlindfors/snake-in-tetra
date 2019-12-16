@@ -1,8 +1,9 @@
-use tetra::graphics::{self, Color, DrawParams, Texture, Vec2};
+use tetra::graphics::{self, Color, DrawParams, Texture};
 use tetra::{Context, ContextBuilder, State};
 use std::collections::VecDeque;
 use rand::Rng;
 use tetra::input::{self, Key};
+use tetra::math::Vec2;
 
 const FRAMES_PER_SECOND: f64 = 15.0;
 const SPRITE_SIZE: i32 = 20;
@@ -174,7 +175,7 @@ impl State for SnakeGame {
         Ok(())
     }
 
-    fn draw(&mut self, ctx: &mut Context, _dt: f64) -> tetra::Result {
+    fn draw(&mut self, ctx: &mut Context) -> tetra::Result {
         graphics::clear(ctx, Color::rgb(0.0, 0.0, 0.0));
 
         self.apple.draw(ctx);
@@ -190,7 +191,7 @@ pub fn main() -> tetra::Result {
 
     ContextBuilder::new("snake", width, height)
         .quit_on_escape(true)
-        .tick_rate(FRAMES_PER_SECOND)
+        .timestep(tetra::time::Timestep::Fixed(FRAMES_PER_SECOND))
         .build()?
-        .run_with(SnakeGame::new)
+        .run(SnakeGame::new)
 }
