@@ -1,9 +1,9 @@
-use tetra::graphics::{self, Color, DrawParams, Texture};
-use tetra::{Context, ContextBuilder, State};
-use std::collections::VecDeque;
 use rand::Rng;
+use std::collections::VecDeque;
+use tetra::graphics::{self, Color, DrawParams, Texture};
 use tetra::input::{self, Key};
 use tetra::math::Vec2;
+use tetra::{Context, ContextBuilder, State};
 
 const FRAMES_PER_SECOND: f64 = 15.0;
 const SPRITE_SIZE: i32 = 20;
@@ -13,7 +13,7 @@ const INITIAL_TAIL: usize = 5;
 struct Apple {
     x: i32,
     y: i32,
-    texture: Texture
+    texture: Texture,
 }
 
 impl Apple {
@@ -21,23 +21,24 @@ impl Apple {
         Ok(Apple {
             x: 3,
             y: 3,
-            texture: Texture::new(ctx, "./resources/red.png")?
+            texture: Texture::new(ctx, "./resources/red.png")?,
         })
     }
 
-    fn draw(&mut self, ctx: &mut Context) {        
+    fn draw(&mut self, ctx: &mut Context) {
         graphics::draw(
-            ctx, 
+            ctx,
             &self.texture,
             DrawParams::new()
-                    .position(Vec2::new(
-                        (self.x * SPRITE_SIZE) as f32, 
-                        (self.y * SPRITE_SIZE) as f32))
-                    .scale(Vec2::new(
-                        (SPRITE_SIZE as f32) * 0.95, 
-                        (SPRITE_SIZE as f32) * 0.95)
-                    )
-                );
+                .position(Vec2::new(
+                    (self.x * SPRITE_SIZE) as f32,
+                    (self.y * SPRITE_SIZE) as f32,
+                ))
+                .scale(Vec2::new(
+                    (SPRITE_SIZE as f32) * 0.95,
+                    (SPRITE_SIZE as f32) * 0.95,
+                )),
+        );
     }
 }
 
@@ -45,23 +46,22 @@ struct Snake {
     x: i32,
     y: i32,
     dx: i32,
-    dy: i32,        
+    dy: i32,
     trail: VecDeque<(i32, i32)>,
     tail: usize,
-    texture: Texture
+    texture: Texture,
 }
 
 impl Snake {
-
     fn new(ctx: &mut Context) -> tetra::Result<Snake> {
         Ok(Snake {
-            x: 10, 
-            y: 10, 
-            dx: 0, 
-            dy: 0, 
-            trail: VecDeque::new(), 
+            x: 10,
+            y: 10,
+            dx: 0,
+            dy: 0,
+            trail: VecDeque::new(),
             tail: INITIAL_TAIL,
-            texture: Texture::new(ctx, "./resources/green.png")?
+            texture: Texture::new(ctx, "./resources/green.png")?,
         })
     }
 
@@ -73,7 +73,7 @@ impl Snake {
         }
         return false;
     }
-    
+
     fn update(&mut self) {
         let x = (self.x + SCREEN_SIZE + self.dx) % SCREEN_SIZE;
         let y = (self.y + SCREEN_SIZE + self.dy) % SCREEN_SIZE;
@@ -100,15 +100,17 @@ impl Snake {
     fn draw(&mut self, ctx: &mut Context) {
         for element in &self.trail {
             graphics::draw(
-                ctx, 
+                ctx,
                 &self.texture,
                 DrawParams::new()
                     .position(Vec2::new(
-                        (element.0 * SPRITE_SIZE) as f32, 
-                        (element.1 * SPRITE_SIZE) as f32))
+                        (element.0 * SPRITE_SIZE) as f32,
+                        (element.1 * SPRITE_SIZE) as f32,
+                    ))
                     .scale(Vec2::new(
-                        (SPRITE_SIZE as f32) * 0.95, 
-                        (SPRITE_SIZE as f32) * 0.95))
+                        (SPRITE_SIZE as f32) * 0.95,
+                        (SPRITE_SIZE as f32) * 0.95,
+                    )),
             );
         }
     }
@@ -116,7 +118,7 @@ impl Snake {
 
 struct SnakeGame {
     apple: Apple,
-    snake: Snake
+    snake: Snake,
 }
 
 impl SnakeGame {
@@ -153,7 +155,6 @@ impl SnakeGame {
 }
 
 impl State for SnakeGame {
-
     fn update(&mut self, ctx: &mut Context) -> tetra::Result {
         self.handle_input(ctx);
 
@@ -164,7 +165,7 @@ impl State for SnakeGame {
             loop {
                 let x = rand::thread_rng().gen_range(0, SCREEN_SIZE);
                 let y = rand::thread_rng().gen_range(0, SCREEN_SIZE);
-                if !self.snake.check_collision(x,y) {
+                if !self.snake.check_collision(x, y) {
                     self.apple.x = x;
                     self.apple.y = y;
                     break;
