@@ -71,7 +71,7 @@ impl Snake {
                 return true;
             }
         }
-        return false;
+        false
     }
 
     fn update(&mut self) {
@@ -130,26 +130,18 @@ impl SnakeGame {
     }
 
     fn handle_input(&mut self, ctx: &mut Context) {
-        if input::is_key_pressed(ctx, Key::Left) {
-            if self.snake.dx == 0 {
-                self.snake.dx = -1;
-                self.snake.dy = 0;
-            }
-        } else if input::is_key_pressed(ctx, Key::Right) {
-            if self.snake.dx == 0 {
-                self.snake.dx = 1;
-                self.snake.dy = 0;
-            }
-        } else if input::is_key_pressed(ctx, Key::Up) {
-            if self.snake.dy == 0 {
-                self.snake.dx = 0;
-                self.snake.dy = -1;
-            }
-        } else if input::is_key_pressed(ctx, Key::Down) {
-            if self.snake.dy == 0 {
-                self.snake.dx = 0;
-                self.snake.dy = 1;
-            }
+        if input::is_key_pressed(ctx, Key::Left) && self.snake.dx == 0 {
+            self.snake.dx = -1;
+            self.snake.dy = 0;
+        } else if input::is_key_pressed(ctx, Key::Right) && self.snake.dx == 0 {
+            self.snake.dx = 1;
+            self.snake.dy = 0;
+        } else if input::is_key_pressed(ctx, Key::Up) && self.snake.dy == 0 {
+            self.snake.dx = 0;
+            self.snake.dy = -1;
+        } else if input::is_key_pressed(ctx, Key::Down) && self.snake.dy == 0 {
+            self.snake.dx = 0;
+            self.snake.dy = 1;
         }
     }
 }
