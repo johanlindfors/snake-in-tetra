@@ -17,8 +17,8 @@ struct Apple {
 }
 
 impl Apple {
-    fn new(ctx: &mut Context) -> tetra::Result<Apple> {
-        Ok(Apple {
+    fn new(ctx: &mut Context) -> tetra::Result<Self> {
+        Ok(Self {
             x: 3,
             y: 3,
             texture: Texture::new(ctx, "./resources/red.png")?,
@@ -53,8 +53,8 @@ struct Snake {
 }
 
 impl Snake {
-    fn new(ctx: &mut Context) -> tetra::Result<Snake> {
-        Ok(Snake {
+    fn new(ctx: &mut Context) -> tetra::Result<Self> {
+        Ok(Self {
             x: 10,
             y: 10,
             dx: 0,
@@ -144,6 +144,18 @@ impl SnakeGame {
             self.snake.dy = 1;
         }
     }
+
+    fn generate_apple(&mut self) {
+        loop {
+            let x = rand::thread_rng().gen_range(0, SCREEN_SIZE);
+            let y = rand::thread_rng().gen_range(0, SCREEN_SIZE);
+            if !self.snake.check_collision(x, y) {
+                self.apple.x = x;
+                self.apple.y = y;
+                break;
+            }
+        }
+    }
 }
 
 impl State for SnakeGame {
@@ -154,15 +166,7 @@ impl State for SnakeGame {
 
         if self.snake.check_collision(self.apple.x, self.apple.y) {
             self.snake.tail += 1;
-            loop {
-                let x = rand::thread_rng().gen_range(0, SCREEN_SIZE);
-                let y = rand::thread_rng().gen_range(0, SCREEN_SIZE);
-                if !self.snake.check_collision(x, y) {
-                    self.apple.x = x;
-                    self.apple.y = y;
-                    break;
-                }
-            }
+            self.generate_apple();
         }
 
         Ok(())
