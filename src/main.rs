@@ -87,10 +87,16 @@ impl Snake {
     }
 
     fn update(&mut self) {
-        let position = Vec2::new(
+        let mut position = Vec2::new(
             (self.position.x + SCREEN_SIZE + self.direction.x) % SCREEN_SIZE,
             (self.position.y + SCREEN_SIZE + self.direction.y) % SCREEN_SIZE,
         );
+        if self.check_collision(position) {
+            self.tail = INITIAL_TAIL;
+            position.x = 10;
+            position.y = 10;
+            self.direction = Vec2::zero()
+        }
         self.position = position;
 
         self.trail.push_back(self.position);
