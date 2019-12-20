@@ -1,12 +1,12 @@
 use tetra::graphics::{self, Color, Texture, DrawParams};
 use tetra::{Context, ContextBuilder, State};
-// use std::collections::VecDeque;
+use std::collections::VecDeque;
 use tetra::math::Vec2;
 
 const FRAMES_PER_SECOND: f64 = 15.0;
 const SPRITE_SIZE: i32 = 20;
 const SCREEN_SIZE: i32 = 20;
-//const INITIAL_TAIL: usize = 5;
+const INITIAL_TAIL: usize = 5;
 
 struct Apple {
     position: Vec2<i32>,
@@ -41,8 +41,8 @@ impl Apple {
 struct Snake {
     position: Vec2<i32>,
     direction: Vec2<i32>,
-    // trail: VecDeque<Vec2<i32>>,
-    // tail: usize,
+    trail: VecDeque<Vec2<i32>>,
+    tail: usize,
     texture: Texture,
 }
 
@@ -51,34 +51,44 @@ impl Snake {
         Ok(Self {
             position: Vec2::new(10, 10),
             direction: Vec2::new(1, 0),
-            // trail: VecDeque::new(),
-            // tail: INITIAL_TAIL,
+            trail: VecDeque::new(),
+            tail: INITIAL_TAIL,
             texture: Texture::new(ctx, "./resources/green.png")?
         })
     }
 
     fn draw(&mut self, ctx: &mut Context) {
-        graphics::draw(
-            ctx,
-            &self.texture,
-            DrawParams::new()
-                .position(Vec2::new(
-                    (self.position.x * SPRITE_SIZE) as f32,
-                    (self.position.y * SPRITE_SIZE) as f32,
-                ))                   
-                .scale(Vec2::new(
-                    (SPRITE_SIZE as f32) * 0.95,
-                    (SPRITE_SIZE as f32) * 0.95,
-                )),
-        );
+        for element in &self.trail {
+            graphics::draw(
+                ctx,
+                &self.texture,
+                DrawParams::new()
+                    .position(Vec2::new(
+                        (element.x * SPRITE_SIZE) as f32,
+                        (element.y * SPRITE_SIZE) as f32,
+                    ))                   
+                    .scale(Vec2::new(
+                        (SPRITE_SIZE as f32) * 0.95,
+                        (SPRITE_SIZE as f32) * 0.95,
+                    )),
+            );
+        }
     }
 
     fn update(&mut self) {
-        let mut position = Vec2::new(
+        let position = Vec2::new(
             (self.position.x + SCREEN_SIZE + self.direction.x) % SCREEN_SIZE,
             (self.position.y + SCREEN_SIZE + self.direction.y) % SCREEN_SIZE,
         );
         self.position = position;
+
+        self.trail.push_back(self.position);
+        loop {
+            if self.trail.len() <= self.tail {
+                break;
+            }
+            self.trail.pop_front();
+        }
     }
 }
 
