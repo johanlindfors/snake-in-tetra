@@ -5,5 +5,5 @@ authors = ["Johan Lindfors <johan.lindfors@coderox.se>"]
 edition = "2018"
 
 [dependencies]
-tetra = { version = "0.3.1" }
+tetra = { version = "0.3" }
 rand = { version = "*" }
