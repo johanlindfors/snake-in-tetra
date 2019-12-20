@@ -1,5 +1,6 @@
 use tetra::graphics::{self, Color, Texture, DrawParams};
 use tetra::{Context, ContextBuilder, State};
+use tetra::input::{self, Key};
 use std::collections::VecDeque;
 use tetra::math::Vec2;
 
@@ -72,7 +73,7 @@ impl Snake {
                         (SPRITE_SIZE as f32) * 0.95,
                     )),
             );
-        }
+        }   
     }
 
     fn update(&mut self) {
@@ -104,10 +105,24 @@ impl GameState {
             snake: Snake::new(ctx)?
         })
     }
+
+    fn handle_input(&mut self, ctx: &mut Context) {
+        if input::is_key_pressed(ctx, Key::Left) && self.snake.direction.x == 0 {
+            self.snake.direction = Vec2::new(-1, 0);
+        } else if input::is_key_pressed(ctx, Key::Right) && self.snake.direction.x == 0 {
+            self.snake.direction = Vec2::new(1, 0);
+        } else if input::is_key_pressed(ctx, Key::Up) && self.snake.direction.y == 0 {
+            self.snake.direction = Vec2::new(0, -1);
+        } else if input::is_key_pressed(ctx, Key::Down) && self.snake.direction.y == 0 {
+            self.snake.direction = Vec2::new(0, 1);
+        }
+    }
 }
 
 impl State for GameState {
     fn update(&mut self, ctx: &mut Context) -> tetra::Result {
+       self.handle_input(ctx);
+        
         self.snake.update();
 
         Ok(())
