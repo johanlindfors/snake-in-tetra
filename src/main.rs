@@ -1,9 +1,9 @@
-use tetra::graphics::{self, Color, Texture, DrawParams};
-use tetra::{Context, ContextBuilder, State};
-use tetra::input::{self, Key};
-use std::collections::VecDeque;
-use tetra::math::Vec2;
 use rand::Rng;
+use std::collections::VecDeque;
+use tetra::graphics::{self, Color, DrawParams, Texture};
+use tetra::input::{self, Key};
+use tetra::math::Vec2;
+use tetra::{Context, ContextBuilder, State};
 
 const FRAMES_PER_SECOND: f64 = 15.0;
 const SPRITE_SIZE: i32 = 20;
@@ -31,7 +31,7 @@ impl Apple {
                 .position(Vec2::new(
                     (self.position.x * SPRITE_SIZE) as f32,
                     (self.position.y * SPRITE_SIZE) as f32,
-                ))                   
+                ))
                 .scale(Vec2::new(
                     (SPRITE_SIZE as f32) * 0.95,
                     (SPRITE_SIZE as f32) * 0.95,
@@ -55,7 +55,7 @@ impl Snake {
             direction: Vec2::new(1, 0),
             trail: VecDeque::new(),
             tail: INITIAL_TAIL,
-            texture: Texture::new(ctx, "./resources/green.png")?
+            texture: Texture::new(ctx, "./resources/green.png")?,
         })
     }
 
@@ -77,13 +77,13 @@ impl Snake {
                     .position(Vec2::new(
                         (element.x * SPRITE_SIZE) as f32,
                         (element.y * SPRITE_SIZE) as f32,
-                    ))                   
+                    ))
                     .scale(Vec2::new(
                         (SPRITE_SIZE as f32) * 0.95,
                         (SPRITE_SIZE as f32) * 0.95,
                     )),
             );
-        }   
+        }
     }
 
     fn update(&mut self) {
@@ -116,9 +116,9 @@ struct GameState {
 
 impl GameState {
     fn new(ctx: &mut Context) -> tetra::Result<Self> {
-        Ok(Self{
+        Ok(Self {
             apple: Apple::new(ctx)?,
-            snake: Snake::new(ctx)?
+            snake: Snake::new(ctx)?,
         })
     }
 
@@ -150,15 +150,15 @@ impl GameState {
 
 impl State for GameState {
     fn update(&mut self, ctx: &mut Context) -> tetra::Result {
-       self.handle_input(ctx);
-        
+        self.handle_input(ctx);
+
         self.snake.update();
-        
+
         if self.snake.check_collision(self.apple.position) {
             self.snake.tail += 1;
             self.generate_apple();
         }
-        
+
         Ok(())
     }
 
