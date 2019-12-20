@@ -1,7 +1,7 @@
-use tetra::graphics::{self, Color};
+use tetra::graphics::{self, Color, Texture, DrawParams};
 use tetra::{Context, ContextBuilder, State};
 // use std::collections::VecDeque;
-// use tetra::math::Vec2;
+use tetra::math::Vec2;
 
 //const FRAMES_PER_SECOND: f64 = 15.0;
 const SPRITE_SIZE: i32 = 20;
@@ -9,14 +9,32 @@ const SCREEN_SIZE: i32 = 20;
 //const INITIAL_TAIL: usize = 5;
 
 struct Apple {
-    // position: Vec2<i32>,
+    position: Vec2<i32>,
+    texture: Texture,
 }
 
 impl Apple {
-    fn new() -> tetra::Result<Self> {
+    fn new(ctx: &mut Context) -> tetra::Result<Self> {
         Ok(Self {
-            // position: Vec2::new(0,0)
+            position: Vec2::new(3, 3),
+            texture: Texture::new(ctx, "./resources/red.png")?,
         })
+    }
+
+    fn draw(&mut self, ctx: &mut Context) {
+        graphics::draw(
+            ctx,
+            &self.texture,
+            DrawParams::new()
+                .position(Vec2::new(
+                    (self.position.x * SPRITE_SIZE) as f32,
+                    (self.position.y * SPRITE_SIZE) as f32,
+                ))                   
+                .scale(Vec2::new(
+                    (SPRITE_SIZE as f32) * 0.95,
+                    (SPRITE_SIZE as f32) * 0.95,
+                )),
+        );
     }
 }
 
@@ -44,9 +62,9 @@ struct GameState {
 }
 
 impl GameState {
-    fn new(_ctx: &mut Context) -> tetra::Result<Self> {
+    fn new(ctx: &mut Context) -> tetra::Result<Self> {
         Ok(Self{
-            apple: Apple::new()?,
+            apple: Apple::new(ctx)?,
             snake: Snake::new()?
         })
     }
@@ -55,6 +73,9 @@ impl GameState {
 impl State for GameState {
     fn draw(&mut self, ctx: &mut Context) -> tetra::Result {
         graphics::clear(ctx, Color::rgb(0.0, 0.0, 0.0));
+
+        self.apple.draw(ctx);
+
         Ok(())
     }
 }
