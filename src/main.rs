@@ -39,20 +39,38 @@ impl Apple {
 }
 
 struct Snake {
-    // position: Vec2<i32>,
-    // direction: Vec2<i32>,
+    position: Vec2<i32>,
+    direction: Vec2<i32>,
     // trail: VecDeque<Vec2<i32>>,
     // tail: usize,
+    texture: Texture,
 }
 
 impl Snake {
-    fn new() -> tetra::Result<Self> {
+    fn new(ctx: &mut Context) -> tetra::Result<Self> {
         Ok(Self {
-            // position: Vec2::new(0,0),
-            // direction: Vec2::new(0,0),
+            position: Vec2::new(10, 10),
+            direction: Vec2::new(0, 0),
             // trail: VecDeque::new(),
-            // tail: INITIAL_TAIL
+            // tail: INITIAL_TAIL,
+            texture: Texture::new(ctx, "./resources/green.png")?
         })
+    }
+
+    fn draw(&mut self, ctx: &mut Context) {
+        graphics::draw(
+            ctx,
+            &self.texture,
+            DrawParams::new()
+                .position(Vec2::new(
+                    (self.position.x * SPRITE_SIZE) as f32,
+                    (self.position.y * SPRITE_SIZE) as f32,
+                ))                   
+                .scale(Vec2::new(
+                    (SPRITE_SIZE as f32) * 0.95,
+                    (SPRITE_SIZE as f32) * 0.95,
+                )),
+        );
     }
 }
 
@@ -65,7 +83,7 @@ impl GameState {
     fn new(ctx: &mut Context) -> tetra::Result<Self> {
         Ok(Self{
             apple: Apple::new(ctx)?,
-            snake: Snake::new()?
+            snake: Snake::new(ctx)?
         })
     }
 }
@@ -75,6 +93,7 @@ impl State for GameState {
         graphics::clear(ctx, Color::rgb(0.0, 0.0, 0.0));
 
         self.apple.draw(ctx);
+        self.snake.draw(ctx);
 
         Ok(())
     }
