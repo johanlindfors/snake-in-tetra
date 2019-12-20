@@ -3,7 +3,7 @@ use tetra::{Context, ContextBuilder, State};
 // use std::collections::VecDeque;
 use tetra::math::Vec2;
 
-//const FRAMES_PER_SECOND: f64 = 15.0;
+const FRAMES_PER_SECOND: f64 = 15.0;
 const SPRITE_SIZE: i32 = 20;
 const SCREEN_SIZE: i32 = 20;
 //const INITIAL_TAIL: usize = 5;
@@ -50,7 +50,7 @@ impl Snake {
     fn new(ctx: &mut Context) -> tetra::Result<Self> {
         Ok(Self {
             position: Vec2::new(10, 10),
-            direction: Vec2::new(0, 0),
+            direction: Vec2::new(1, 0),
             // trail: VecDeque::new(),
             // tail: INITIAL_TAIL,
             texture: Texture::new(ctx, "./resources/green.png")?
@@ -72,6 +72,14 @@ impl Snake {
                 )),
         );
     }
+
+    fn update(&mut self) {
+        let mut position = Vec2::new(
+            (self.position.x + SCREEN_SIZE + self.direction.x) % SCREEN_SIZE,
+            (self.position.y + SCREEN_SIZE + self.direction.y) % SCREEN_SIZE,
+        );
+        self.position = position;
+    }
 }
 
 struct GameState {
@@ -89,6 +97,12 @@ impl GameState {
 }
 
 impl State for GameState {
+    fn update(&mut self, ctx: &mut Context) -> tetra::Result {
+        self.snake.update();
+
+        Ok(())
+    }
+
     fn draw(&mut self, ctx: &mut Context) -> tetra::Result {
         graphics::clear(ctx, Color::rgb(0.0, 0.0, 0.0));
 
@@ -105,6 +119,7 @@ fn main() -> tetra::Result {
 
     ContextBuilder::new("Snake!", width, height)
         .quit_on_escape(true)
+        .timestep(tetra::time::Timestep::Fixed(FRAMES_PER_SECOND))
         .build()?
         .run(GameState::new)
 }
