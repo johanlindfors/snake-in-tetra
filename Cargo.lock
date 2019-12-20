@@ -1024,6 +1024,7 @@ dependencies = [
 name = "snake"
 version = "0.1.0"
 dependencies = [
+ "rand 0.6.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "tetra 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 

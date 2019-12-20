@@ -3,6 +3,7 @@ use tetra::{Context, ContextBuilder, State};
 use tetra::input::{self, Key};
 use std::collections::VecDeque;
 use tetra::math::Vec2;
+use rand::Rng;
 
 const FRAMES_PER_SECOND: f64 = 15.0;
 const SPRITE_SIZE: i32 = 20;
@@ -56,6 +57,15 @@ impl Snake {
             tail: INITIAL_TAIL,
             texture: Texture::new(ctx, "./resources/green.png")?
         })
+    }
+
+    fn check_collision(&mut self, position: Vec2<i32>) -> bool {
+        for pos in &self.trail {
+            if *pos == position {
+                return true;
+            }
+        }
+        false
     }
 
     fn draw(&mut self, ctx: &mut Context) {
@@ -117,6 +127,19 @@ impl GameState {
             self.snake.direction = Vec2::new(0, 1);
         }
     }
+
+    fn generate_apple(&mut self) {
+        loop {
+            let position = Vec2::new(
+                rand::thread_rng().gen_range(0, SCREEN_SIZE),
+                rand::thread_rng().gen_range(0, SCREEN_SIZE),
+            );
+            if !self.snake.check_collision(position) {
+                self.apple.position = position;
+                break;
+            }
+        }
+    }
 }
 
 impl State for GameState {
@@ -124,7 +147,12 @@ impl State for GameState {
        self.handle_input(ctx);
         
         self.snake.update();
-
+        
+        if self.snake.check_collision(self.apple.position) {
+            self.snake.tail += 1;
+            self.generate_apple();
+        }
+        
         Ok(())
     }
 
