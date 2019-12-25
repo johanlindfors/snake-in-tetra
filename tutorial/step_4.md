@@ -60,7 +60,6 @@ fn draw(&mut self, ctx: &mut Context) -> tetra::Result {
     Ok(())
 }
 ```
-In the [next step] we will render the snake, or at least some part of it.
+In the [next step](step_5.md) we will render the snake, or at least some part of it.
 
 [red pixel]: https://github.com/programmeramera/snake-in-tetra/blob/master/resources/red.png
-[next step]: (step_5.md)

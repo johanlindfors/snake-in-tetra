@@ -58,6 +58,4 @@ fn update(&mut self) {
     }
 }
 ```
-If we run the code now, we will have a snake with five body parts moving across the screen. [Now we're going] to implement the interaction, allowing us to steer the snake as we want.
-
-[Now we're going]: (step_8.md)
+If we run the code now, we will have a snake with five body parts moving across the screen. [Now we're going](step_8.md) to implement the interaction, allowing us to steer the snake as we want.

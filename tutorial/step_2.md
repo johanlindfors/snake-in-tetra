@@ -22,6 +22,4 @@ fn main() -> tetra::Result {
         .run(|_| Ok(GameState))
 }
 ```
-In the [next step] we will add the apple and the snake to the source files.
-
-[next step]: (step_3.md)
+In the [next step](step_3.md) we will add the apple and the snake to the source files.

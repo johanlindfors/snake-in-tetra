@@ -38,4 +38,4 @@ if self.snake.check_collision(self.apple.position) {
     self.generate_apple();
 }
 ```
-Now we can eat apples, lots of them actually cause the snake can pretty much grow indefinetly since there's nothing that keeps us from growing to far. We need to change that now, by adding collision handling of the snake itself.
+Now we can eat apples, lots of them actually cause the snake can pretty much grow indefinetly since there's nothing that keeps us from growing to far. We need to [change that now](step_10.md), by adding collision handling of the snake itself.

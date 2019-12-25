@@ -48,6 +48,4 @@ ContextBuilder::new("Snake!", width, height)
     .build()?
     .run(GameState::new)
 ```
-Now the game should run quite smoothly but we still only have one single body element of the snake. Lets change that in the [next step].
-
-[next step]: (step_7.md)
+Now the game should run quite smoothly but we still only have one single body element of the snake. Lets change that in the [next step](step_7.md).

@@ -27,6 +27,4 @@ fn update(&mut self, ctx: &mut Context) -> tetra::Result {
     Ok(())
 }
 ```
-Now we are really getting somewhere, we can steer the snake and move across the screen, but we still can't eat the apple, let's [fix that now].
-
-[fix that now]: (step_9.md)
+Now we are really getting somewhere, we can steer the snake and move across the screen, but we still can't eat the apple, let's [fix that now](step_9.md).

@@ -43,6 +43,4 @@ ContextBuilder::new("Snake!", width, height)
     .build()?
     .run(GameState::new)
 ```
-In the [next step] we will begin rendering the apple by leveraging the functionality of tetra.
-
-[next step]: (step_4.md)
+In the [next step](step_4.md) we will begin rendering the apple by leveraging the functionality of tetra.
