@@ -41,7 +41,6 @@ fn main() -> tetra::Result {
         .run(|_| Ok(GameState))
 }
 ```
-Now to the [next step] in which we will modify this scaffold to fit our purpose with the tiny snake game.
+Now to the [next step](step_2.md) in which we will modify this scaffold to fit our purpose with the tiny snake game.
 
-[next step]: (step_2.md)
 [Tetra's repository]: https://github.com/17cupsofcoffee/tetra
