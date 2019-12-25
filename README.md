@@ -6,4 +6,4 @@ The code should work just fine on several different platforms (Windows and MacOS
 Also, if you are interested and learning some game development basics, I have written a [10 step tutorial] on how to build this game pretty much from scratch.
 
 [Tetra]: https://github.com/17cupsofcoffe/tetra
-[10 step tutorial]: (./tutorial/step_1.md)
+[10 step tutorial]: (tutorial/step_1.md)
