@@ -10,20 +10,23 @@ const SPRITE_SIZE: i32 = 20;
 const SCREEN_SIZE: i32 = 20;
 const INITIAL_TAIL: usize = 5;
 
+type Position = Vec2<i32>;
+type Direction = Vec2<i32>;
+
 struct Apple {
-    position: Vec2<i32>,
+    position: Position,
     texture: Texture,
 }
 
 impl Apple {
     fn new(ctx: &mut Context) -> tetra::Result<Self> {
         Ok(Self {
-            position: Vec2::new(3, 3),
+            position: Position::new(3, 3),
             texture: Texture::new(ctx, "./resources/red.png")?,
         })
     }
 
-    fn draw(&mut self, ctx: &mut Context) {
+    fn draw(&self, ctx: &mut Context) {
         graphics::draw(
             ctx,
             &self.texture,
@@ -41,9 +44,9 @@ impl Apple {
 }
 
 struct Snake {
-    position: Vec2<i32>,
-    direction: Vec2<i32>,
-    trail: VecDeque<Vec2<i32>>,
+    position: Position,
+    direction: Direction,
+    trail: VecDeque<Position>,
     tail: usize,
     texture: Texture,
 }
@@ -51,15 +54,15 @@ struct Snake {
 impl Snake {
     fn new(ctx: &mut Context) -> tetra::Result<Self> {
         Ok(Self {
-            position: Vec2::new(10, 10),
-            direction: Vec2::zero(),
+            position: Position::new(10, 10),
+            direction: Direction::zero(),
             trail: VecDeque::new(),
             tail: INITIAL_TAIL,
             texture: Texture::new(ctx, "./resources/green.png")?,
         })
     }
 
-    fn check_collision(&mut self, position: Vec2<i32>) -> bool {
+    fn check_collision(&self, position: Position) -> bool {
         for pos in &self.trail {
             if *pos == position {
                 return true;
@@ -69,7 +72,7 @@ impl Snake {
     }
 
     fn update(&mut self) {
-        let mut position = Vec2::new(
+        let mut position = Position::new(
             (self.position.x + SCREEN_SIZE + self.direction.x) % SCREEN_SIZE,
             (self.position.y + SCREEN_SIZE + self.direction.y) % SCREEN_SIZE,
         );
@@ -90,7 +93,7 @@ impl Snake {
         }
     }
 
-    fn draw(&mut self, ctx: &mut Context) {
+    fn draw(&self, ctx: &mut Context) {
         for element in &self.trail {
             graphics::draw(
                 ctx,
@@ -124,19 +127,19 @@ impl SnakeGame {
 
     fn handle_input(&mut self, ctx: &mut Context) {
         if input::is_key_pressed(ctx, Key::Left) && self.snake.direction.x == 0 {
-            self.snake.direction = Vec2::new(-1, 0);
+            self.snake.direction = Direction::new(-1, 0);
         } else if input::is_key_pressed(ctx, Key::Right) && self.snake.direction.x == 0 {
-            self.snake.direction = Vec2::new(1, 0);
+            self.snake.direction = Direction::new(1, 0);
         } else if input::is_key_pressed(ctx, Key::Up) && self.snake.direction.y == 0 {
-            self.snake.direction = Vec2::new(0, -1);
+            self.snake.direction = Direction::new(0, -1);
         } else if input::is_key_pressed(ctx, Key::Down) && self.snake.direction.y == 0 {
-            self.snake.direction = Vec2::new(0, 1);
+            self.snake.direction = Direction::new(0, 1);
         }
     }
 
     fn generate_apple(&mut self) {
         loop {
-            let position = Vec2::new(
+            let position = Position::new(
                 rand::thread_rng().gen_range(0, SCREEN_SIZE),
                 rand::thread_rng().gen_range(0, SCREEN_SIZE),
             );
