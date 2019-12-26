@@ -25,7 +25,7 @@ impl Apple {
 ```
 For the actual rendering of the apple, let's add a draw-method to the implementation of the apple as follows. The parameters to the graphis::draw call is the Context, a reference to the texture, and a DrawParams structure with which we can position and scale the texture to take into consideration the specified SPRITE_SIZE. When we scale the texture, we tone it down a notch (95%) which will add a thin border to the apple, giving a neat pixelized effect.
 ```rust
-fn draw(&mut self, ctx: &mut Context) {
+fn draw(&self, ctx: &mut Context) {
     graphics::draw(
         ctx,
         &self.texture,

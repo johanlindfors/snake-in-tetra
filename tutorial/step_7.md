@@ -22,7 +22,7 @@ tail: INITIAL_TAIL,
 ```
 Now we need to update the rendering of the snake to not just only draw the actual current position, but only iterate through all of the elements in the queue and render them in their respective positions.
 ```rust
-fn draw(&mut self, ctx: &mut Context) {
+fn draw(&self, ctx: &mut Context) {
     for element in &self.trail {
         graphics::draw(
             ctx,

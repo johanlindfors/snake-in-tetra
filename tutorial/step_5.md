@@ -15,7 +15,7 @@ impl Snake {
         })
     }
 
-    fn draw(&mut self, ctx: &mut Context) {
+    fn draw(&self, ctx: &mut Context) {
         graphics::draw(
             ctx,
             &self.texture,

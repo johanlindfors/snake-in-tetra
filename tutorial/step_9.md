@@ -2,7 +2,7 @@
 ## Step 9 - The snake eating apples
 When the snake moves over the apple we want to increase the lenght of the tail and also move the apple to a new position. The first logic we need to make this happen is a method in the snake instance to allow us to check for any collisions with the current position. Here is a small collision checking method that iterates over all the body parts in the queue and checks if the passed position collides with any part.
 ```rust
-fn check_collision(&mut self, position: Vec2<i32>) -> bool {
+fn check_collision(&self, position: Vec2<i32>) -> bool {
     for pos in &self.trail {
         if *pos == position {
             return true;
