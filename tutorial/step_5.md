@@ -52,6 +52,6 @@ fn draw(&mut self, ctx: &mut Context) -> tetra::Result {
     Ok(())
 }
 ```
-While this will actually render the snake as a single piece on the screen, we have no tail or actual interation of the snake. The movement of the snake and also rendering it's tail will be done in the [next step](step_6.md).
+While this will actually render the snake as a single piece on the screen, we have no tail or actual interaction of the snake. The movement of the snake and also rendering it's tail will be done in the [next step](step_6.md).
 
 [green pixel]: https://github.com/programmeramera/snake-in-tetra/blob/master/resources/green.png
