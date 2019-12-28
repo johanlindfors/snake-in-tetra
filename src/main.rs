@@ -1,10 +1,10 @@
 use rand::Rng;
 use std::collections::VecDeque;
+use tetra::audio::Sound;
 use tetra::graphics::{self, Color, DrawParams, Texture};
 use tetra::input::{self, Key};
 use tetra::math::Vec2;
 use tetra::{Context, ContextBuilder, State};
-use tetra::audio::Sound;
 
 const FRAMES_PER_SECOND: f64 = 15.0;
 const SPRITE_SIZE: i32 = 20;
@@ -79,9 +79,7 @@ impl Snake {
             (self.position.x + SCREEN_SIZE + self.direction.x) % SCREEN_SIZE,
             (self.position.y + SCREEN_SIZE + self.direction.y) % SCREEN_SIZE,
         );
-        if self.direction != Vec2::zero() &&
-           self.check_collision(position) 
-        {
+        if self.direction != Vec2::zero() && self.check_collision(position) {
             self.die.play(ctx).unwrap();
             self.tail = INITIAL_TAIL;
             position.x = 10;
