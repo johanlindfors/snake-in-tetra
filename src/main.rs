@@ -4,6 +4,7 @@ use tetra::graphics::{self, Color, DrawParams, Texture};
 use tetra::input::{self, Key};
 use tetra::math::Vec2;
 use tetra::{Context, ContextBuilder, State};
+use tetra::audio::Sound;
 
 const FRAMES_PER_SECOND: f64 = 15.0;
 const SPRITE_SIZE: i32 = 20;
@@ -49,6 +50,7 @@ struct Snake {
     trail: VecDeque<Position>,
     tail: usize,
     texture: Texture,
+    die: Sound,
 }
 
 impl Snake {
@@ -59,6 +61,7 @@ impl Snake {
             trail: VecDeque::new(),
             tail: INITIAL_TAIL,
             texture: Texture::new(ctx, "./resources/green.png")?,
+            die: Sound::new("./resources/splat.mp3")?,
         })
     }
 
@@ -71,12 +74,15 @@ impl Snake {
         false
     }
 
-    fn update(&mut self) {
+    fn update(&mut self, ctx: &mut Context) {
         let mut position = Position::new(
             (self.position.x + SCREEN_SIZE + self.direction.x) % SCREEN_SIZE,
             (self.position.y + SCREEN_SIZE + self.direction.y) % SCREEN_SIZE,
         );
-        if self.check_collision(position) {
+        if self.direction != Vec2::zero() &&
+           self.check_collision(position) 
+        {
+            self.die.play(ctx).unwrap();
             self.tail = INITIAL_TAIL;
             position.x = 10;
             position.y = 10;
@@ -115,6 +121,7 @@ impl Snake {
 struct SnakeGame {
     apple: Apple,
     snake: Snake,
+    eat: Sound,
 }
 
 impl SnakeGame {
@@ -122,6 +129,7 @@ impl SnakeGame {
         Ok(SnakeGame {
             apple: Apple::new(ctx)?,
             snake: Snake::new(ctx)?,
+            eat: Sound::new("./resources/chomp.mp3")?,
         })
     }
 
@@ -155,9 +163,10 @@ impl State for SnakeGame {
     fn update(&mut self, ctx: &mut Context) -> tetra::Result {
         self.handle_input(ctx);
 
-        self.snake.update();
+        self.snake.update(ctx);
 
         if self.snake.check_collision(self.apple.position) {
+            self.eat.play(ctx)?;
             self.snake.tail += 1;
             self.generate_apple();
         }
