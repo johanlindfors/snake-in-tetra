@@ -17,6 +17,6 @@ fn update(&mut self) {
     
     ...
 ```
-Now you should have a small snake game running, built with the language rust and leveraging the tetra-framework. Feel free to provide feedback on this sample on the [GitHub repository].
+In the [next step](step_11.md) we add some sound effects to make the game a bit more fun to play.
 
 [GitHub repository]: https://github.com/programmeramera/snake-in-tetra.git
