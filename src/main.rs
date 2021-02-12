@@ -28,9 +28,8 @@ impl Apple {
     }
 
     fn draw(&self, ctx: &mut Context) {
-        graphics::draw(
+        self.texture.draw(
             ctx,
-            &self.texture,
             DrawParams::new()
                 .position(Vec2::new(
                     (self.position.x * SPRITE_SIZE) as f32,
@@ -99,9 +98,8 @@ impl Snake {
 
     fn draw(&self, ctx: &mut Context) {
         for element in &self.trail {
-            graphics::draw(
+            self.texture.draw(
                 ctx,
-                &self.texture,
                 DrawParams::new()
                     .position(Vec2::new(
                         (element.x * SPRITE_SIZE) as f32,
