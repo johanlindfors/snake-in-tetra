@@ -16,9 +16,8 @@ impl Snake {
     }
 
     fn draw(&self, ctx: &mut Context) {
-        graphics::draw(
+        self.texture.draw(
             ctx,
-            &self.texture,
             DrawParams::new()
                 .position(Vec2::new(
                     (self.position.x * SPRITE_SIZE) as f32,
@@ -27,7 +26,7 @@ impl Snake {
                 .scale(Vec2::new(
                     (SPRITE_SIZE as f32) * 0.95,
                     (SPRITE_SIZE as f32) * 0.95,
-                )),
+                ))
         );
     }
 }

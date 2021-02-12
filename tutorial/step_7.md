@@ -24,9 +24,8 @@ Now we need to update the rendering of the snake to not just only draw the actua
 ```rust
 fn draw(&self, ctx: &mut Context) {
     for element in &self.trail {
-        graphics::draw(
+        self.texture.draw(
             ctx,
-            &self.texture,
             DrawParams::new()
                 .position(Vec2::new(
                     (element.x * SPRITE_SIZE) as f32,
@@ -35,7 +34,7 @@ fn draw(&self, ctx: &mut Context) {
                 .scale(Vec2::new(
                     (SPRITE_SIZE as f32) * 0.95,
                     (SPRITE_SIZE as f32) * 0.95,
-                )),
+                ))
         );
     }
 }
