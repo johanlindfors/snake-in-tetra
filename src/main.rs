@@ -144,8 +144,8 @@ impl SnakeGame {
     fn generate_apple(&mut self) {
         loop {
             let position = Position::new(
-                rand::thread_rng().gen_range(0, SCREEN_SIZE),
-                rand::thread_rng().gen_range(0, SCREEN_SIZE),
+                rand::thread_rng().gen_range(0..SCREEN_SIZE),
+                rand::thread_rng().gen_range(0..SCREEN_SIZE),
             );
             if !self.snake.check_collision(position) {
                 self.apple.position = position;
