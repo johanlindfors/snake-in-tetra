@@ -97,18 +97,33 @@ impl Snake {
     }
 
     fn draw(&self, ctx: &mut Context) {
+        let origin = Vec2::new(0.5, 0.5);
+        let body_scale = Vec2::new((SPRITE_SIZE as f32) * 0.85, (SPRITE_SIZE as f32) * 0.85);
+        let head_scale = Vec2::new((SPRITE_SIZE as f32) * 0.95, (SPRITE_SIZE as f32) * 0.95);
         for element in &self.trail {
             self.texture.draw(
                 ctx,
                 DrawParams::new()
+                    .origin(origin)
                     .position(Vec2::new(
-                        (element.x * SPRITE_SIZE) as f32,
-                        (element.y * SPRITE_SIZE) as f32,
+                        (element.x * SPRITE_SIZE + SPRITE_SIZE / 2) as f32,
+                        (element.y * SPRITE_SIZE + SPRITE_SIZE / 2) as f32,
                     ))
-                    .scale(Vec2::new(
-                        (SPRITE_SIZE as f32) * 0.95,
-                        (SPRITE_SIZE as f32) * 0.95,
-                    )),
+                    .scale(body_scale),
+            );
+        }
+        if !self.trail.is_empty() {
+            let element = self.trail.back().unwrap();
+            self.texture.draw(
+                ctx,
+                DrawParams::new()
+                    .color(Color::rgb(0.7, 0.7, 0.7))
+                    .origin(origin)
+                    .position(Vec2::new(
+                        (element.x * SPRITE_SIZE + SPRITE_SIZE / 2) as f32,
+                        (element.y * SPRITE_SIZE + SPRITE_SIZE / 2) as f32,
+                    ))
+                    .scale(head_scale),
             );
         }
     }
@@ -181,8 +196,8 @@ impl State for SnakeGame {
 }
 
 pub fn main() -> tetra::Result {
-    let width = (SPRITE_SIZE * SCREEN_SIZE) as i32;
-    let height = (SPRITE_SIZE * SCREEN_SIZE) as i32;
+    let width = SPRITE_SIZE * SCREEN_SIZE;
+    let height = SPRITE_SIZE * SCREEN_SIZE;
 
     ContextBuilder::new("snake", width, height)
         .quit_on_escape(true)
